@@ -381,48 +381,9 @@ footer {
 </footer>
 
 <script>
-document.getElementById("joinForm")
-.addEventListener("submit", function(event) {
-  event.preventDefault();
 
-  const nickname =
-    document.getElementById("nickname").value.trim();
-
-  const game =
-    document.getElementById("game").value.trim();
-
-  const platform =
-    document.getElementById("platform").value;
-
-  const about =
-    document.getElementById("about").value.trim();
-
-  const message =
-    "ZGŁOSZENIE NA NAGRYWKI\n\n" +
-    "Nick: " + nickname + "\n" +
-    "Gra: " + game + "\n" +
-    "Platforma: " + platform + "\n" +
-    "O mnie: " + (about || "Brak");
-
-  const discord =
-    "https://discord.gg/BS2ByXF2";
-
-  const url =
-    "https://discord.com/channels/@me";
-
-  const encoded =
-    encodeURIComponent(message);
-
-  alert(
-    "Dziękujemy za zgłoszenie! " +
-    "Teraz przejdziesz na nasz Discord. " +
-    "Wyślij tam swoje zgłoszenie."
-  );
-
-  window.open(discord, "_blank");
-});
-document.getElementById("joinForm")
-.addEventListener("submit", async function(event) {
+<script>
+document.getElementById("joinForm").addEventListener("submit", async function(event) {
   event.preventDefault();
 
   const button = this.querySelector("button");
@@ -442,29 +403,24 @@ document.getElementById("joinForm")
       "https://wspolne-granie.09msan.workers.dev",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       }
     );
 
     if (!response.ok) {
-      throw new Error("Błąd wysyłania");
+      throw new Error("Błąd: " + response.status);
     }
 
-    alert("Zgłoszenie wysłane! Dzięki za zapisanie się.");
-
+    alert("Zgłoszenie wysłane!");
     this.reset();
 
   } catch (error) {
-    alert("Nie udało się wysłać zgłoszenia. Spróbuj ponownie.");
+    console.error(error);
+    alert("Nie udało się wysłać zgłoszenia: " + error.message);
   } finally {
     button.disabled = false;
     button.textContent = "WYŚLIJ ZGŁOSZENIE →";
   }
 });
-
-
-</body>
-</html>
+</script>
